@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Information</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='static/styles.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Processed Financial Information</h1>
+
+        <!-- First Table -->
+        <h2>Key Financial Information</h2>
+        <div class="table-responsive">
+            {{ table1 | safe }}
+        </div>
+
+        <!-- Second Table -->
+        <h2>Financial Ratios</h2>
+        <div class="table-responsive">
+            {{ table2 | safe }}
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+

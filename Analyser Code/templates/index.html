@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Financials, Annual Accounts, Belgium, NBB, Jaarrekeningen, Analyse van Jaarrekeningen">
+    <meta name="description" content="Ultimate analysing tool for Belgian Annual Accounts">
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+    <title> Xanalyser</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<body>
+    <header id="site-header">
+        <nav id="navigation-primary" role="navigation" class="navbar">
+            <div class="container" bis_skin_checked="1">
+                <a href="/" class="site-header-logo">
+                    <img src="/static/images/xanalyser_logo.png" alt="Xanalyser logo">
+                </a>
+            </div>
+        </nav>
+    </header>
+    <div class="title">
+        <h1>Belgian Annual Account Analyser</h1>
+        <p>This tool allows you to analyse an annual account which is downloaded from the National Bank of Belgium. You provide this with a .pdf file, and key financial information and financial ratios will be presented based on the current year. </p>
+    </div>
+<section>
+    <div class="container">
+        <h2>Select an annual account to analyse</h2>
+        <form id="uploadForm" action="/process_file" method="POST" enctype="multipart/form-data">
+            <div class="file-upload">
+                <!-- Custom file upload button -->
+                <label for="file-upload" class="custom-file-upload" id="customFileUpload">
+                    Choose File
+                </label>
+                <input id="file-upload" type="file" name="file" accept=".pdf" required>
+                <span class="file-name" id="file-name">No file chosen</span>
+            </div>
+            <br>
+            <button class="upload-button" type="submit">Upload and Process</button>
+        </form>
+    </div>
+
+    <!-- Loading Page (Hidden initially) -->
+    <div class="loading-page" id="loadingPage" style="display: none;">
+        <div class="loading-bar">
+            <div class="loading-bar-inner"></div>
+        </div>
+    </div>
+
+    <script>
+        // Display the chosen file name and hide the "Choose File" button after file selection
+        const fileUpload = document.getElementById('file-upload');
+        const fileNameDisplay = document.getElementById('file-name');
+        const customFileUpload = document.getElementById('customFileUpload');
+
+        fileUpload.addEventListener('change', function() {
+            if (fileUpload.files.length > 0) {
+                fileNameDisplay.textContent = fileUpload.files[0].name;
+                customFileUpload.style.display = 'none';  // Hide the "Choose File" button
+            } else {
+                fileNameDisplay.textContent = 'No file chosen';
+            }
+        });
+
+        // Handle form submission
+        const uploadForm = document.getElementById('uploadForm');
+        const loadingPage = document.getElementById('loadingPage');
+
+        uploadForm.addEventListener('submit', function(event) {
+            // Show the loading page after submission
+            loadingPage.style.display = 'flex';  // Show loading page
+
+            // Optionally add a delay for better UX before form submission
+            setTimeout(function() {
+                uploadForm.submit();  // Continue submitting the form
+            }, 1000);  // Adjust the delay time as needed
+        });
+    </script>
+</section>
+    
+</body>
+</html>
