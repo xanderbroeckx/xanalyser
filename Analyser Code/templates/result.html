@@ -1,31 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Information</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='static/styles.css') }}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <meta name="keywords" content="Financials, Annual Accounts, Belgium, NBB, Jaarrekeningen, Analyse van Jaarrekeningen">
+    <meta name="description" content="Ultimate analysing tool for Belgian Annual Accounts">
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+    <title>Xanalyser</title>
+    <link rel="stylesheet" href="static/css/styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Processed Financial Information</h1>
+    <div class="wrapper">
+        <header id="site-header">
+            <nav id="navigation-primary" role="navigation" class="navbar">
+                <div class="container">
+                    <a href="/" class="logo-link">
+                        <img class="site-header-logo" src="/static/images/xanalyser_logo.png" alt="Xanalyser logo">
+                    </a>
+                    <p class="site-header-text">Belgian Annual Account Analyser</p>
+                    <a class="linkedin-logo" href="https://www.linkedin.com/in/xander-broeckx-10b82b1b7" target="_blank">
+                        <img width="32" alt="LinkedIn logo initials" src="/static/images/linkedin_logo.png">
+                    </a>
+                </div>
+            </nav>
+        </header>
 
-        <!-- First Table -->
-        <h2>Key Financial Information</h2>
-        <div class="table-responsive">
-            {{ table1 | safe }}
+    <main>
+        <div class="main-content">
+            <div class="result-tables">
+                <h1>Processed Financial Information</h1>
+        
+                <!-- First Table -->
+                <p class="table-title">Key Financial Information</p>
+                <div class="table-responsive">
+                    {{ table1 | safe }}
+                </div>
+        
+                <!-- Second Table -->
+                <p class="table-title">Financial Ratios</p>
+                <div class="table-responsive">
+                    {{ table2 | safe }}
+                </div>
+                <a href="/">
+                    <button class="custom-file-upload type="submit">Analyse New Account</button>
+                </a>
+            </div>
         </div>
-
-        <!-- Second Table -->
-        <h2>Financial Ratios</h2>
-        <div class="table-responsive">
-            {{ table2 | safe }}
-        </div>
-    </div>
+    </main>
+    <footer id="site-footer">
+        <p class="footer-content">Xanalyser by Xander Broeckx - &copy; 2024 </p>
+    </footer>
 </body>
 </html>
-
 
 
 

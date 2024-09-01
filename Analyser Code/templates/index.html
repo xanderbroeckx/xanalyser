@@ -6,77 +6,125 @@
     <meta name="keywords" content="Financials, Annual Accounts, Belgium, NBB, Jaarrekeningen, Analyse van Jaarrekeningen">
     <meta name="description" content="Ultimate analysing tool for Belgian Annual Accounts">
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
-    <title> Xanalyser</title>
+    <title>Xanalyser</title>
     <link rel="stylesheet" href="static/css/styles.css">
 </head>
 <body>
-    <header id="site-header">
-        <nav id="navigation-primary" role="navigation" class="navbar">
-            <div class="container" bis_skin_checked="1">
-                <a href="/" class="site-header-logo">
-                    <img src="/static/images/xanalyser_logo.png" alt="Xanalyser logo">
-                </a>
+    <div class="wrapper">
+        <header id="site-header">
+            <nav id="navigation-primary" role="navigation" class="navbar">
+                <div class="container">
+                    <a href="/" class="logo-link">
+                        <img class="site-header-logo" src="/static/images/xanalyser_logo.png" alt="Xanalyser logo">
+                    </a>
+                    <p class="site-header-text">Belgian Annual Account Analyser</p>
+                    <a class="linkedin-logo" href="https://www.linkedin.com/in/xander-broeckx-10b82b1b7" target="_blank">
+                        <img width="32" alt="LinkedIn logo initials" src="/static/images/linkedin_logo.png">
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <div class="main-content">
+                <div class="title">
+                    <p>This tool allows you to analyse an annual account which is downloaded from the <a class="NBB" href="https://consult.cbso.nbb.be" target="_blank">National Bank of Belgium</a>. You provide this with a .pdf file, and key financial information and financial ratios will be presented based on the current year and the previous year.</p>
+                </div>
+                <div class="selection-box">
+                    <h2>Select an annual account to analyse</h2>
+                    <form id="uploadForm" action="/process_file" method="POST" enctype="multipart/form-data">
+                        <div class="file-upload">
+                            <label for="file-upload" class="custom-file-upload">Choose File</label>
+                            <input id="file-upload" type="file" name="file" accept=".pdf" required>
+                            <span class="file-name" id="file-name">No file chosen</span>
+                        </div>
+                        <h2>Select the type of annual account</h2>
+                        <!-- Checkbox Group styled as buttons -->
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="full" name="option" value="Full">
+                            <label for="full">Full</label>
+                            
+                            <input type="checkbox" id="abridged" name="option" value="Abridged">
+                            <label for="abridged">Abridged</label>
+                            
+                            <input type="checkbox" id="micro" name="option" value="Micro">
+                            <label for="micro">Micro</label>
+                        </div>
+
+                        <!-- Hidden submit button that will be shown when conditions are met -->
+                        <button class="custom-file-upload submit" type="submit" id="submit-btn">Analyse Account</button>
+                    </form>
+                </div>
+
+                <div class="loading-page" id="loadingPage" style="display: none;">
+                    <div class="loading-circle"></div>
+                </div>
+
+                <script>
+                    // Elements selection
+                    const fileUpload = document.getElementById('file-upload');
+                    const fileNameLabel = document.getElementById('file-name');
+                    const customFileUpload = document.querySelector('.custom-file-upload');
+                    const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
+                    const submitButton = document.getElementById('submit-btn');
+                    const uploadForm = document.getElementById('uploadForm');
+
+                    // Function to check if conditions are met to show submit button
+                    function checkConditions() {
+                        const isFileSelected = fileUpload.files.length > 0;
+                        const isCheckboxChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+                        if (isFileSelected && isCheckboxChecked) {
+                            submitButton.style.display = 'block'; // Show submit button
+                        } else {
+                            submitButton.style.display = 'none'; // Hide submit button
+                        }
+                    }
+
+                    // Event listener for file upload change
+                    fileUpload.addEventListener('change', function () {
+                        if (this.files.length > 0) {
+                            fileNameLabel.textContent = this.files[0].name;
+                            customFileUpload.style.display = 'none'; // Hide "Choose File" button
+                        } else {
+                            fileNameLabel.textContent = 'No file chosen';
+                            customFileUpload.style.display = 'block'; // Show "Choose File" button
+                        }
+                        checkConditions(); // Check conditions when file changes
+                    });
+
+                    // Event listeners for checkbox change
+                    checkboxes.forEach(checkbox => {
+                        checkbox.addEventListener('change', function() {
+                            checkboxes.forEach(otherCheckbox => {
+                                if (otherCheckbox !== this) {
+                                    otherCheckbox.checked = false; // Uncheck other checkboxes
+                                }
+                            });
+                            checkConditions(); // Check conditions when checkbox changes
+                        });
+                    });
+
+                    // Form submission handler to ensure that the button is only clickable if conditions are met
+                    uploadForm.addEventListener('submit', function (event) {
+                        // Prevent form submission if conditions aren't met (just in case)
+                        const isFileSelected = fileUpload.files.length > 0;
+                        const isCheckboxChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+                        if (!isFileSelected || !isCheckboxChecked) {
+                            alert('Please select a file and an option before submitting.');
+                            event.preventDefault();
+                        } else {
+                            document.getElementById('loadingPage').style.display = 'flex'; // Show loading screen
+                        }
+                    });
+                </script>
             </div>
-        </nav>
-    </header>
-    <div class="title">
-        <h1>Belgian Annual Account Analyser</h1>
-        <p>This tool allows you to analyse an annual account which is downloaded from the National Bank of Belgium. You provide this with a .pdf file, and key financial information and financial ratios will be presented based on the current year. </p>
+        </main>
+
+        <footer id="site-footer">
+            <p class="footer-content">Xanalyser by Xander Broeckx - &copy; 2024</p>
+        </footer>
     </div>
-<section>
-    <div class="container">
-        <h2>Select an annual account to analyse</h2>
-        <form id="uploadForm" action="/process_file" method="POST" enctype="multipart/form-data">
-            <div class="file-upload">
-                <!-- Custom file upload button -->
-                <label for="file-upload" class="custom-file-upload" id="customFileUpload">
-                    Choose File
-                </label>
-                <input id="file-upload" type="file" name="file" accept=".pdf" required>
-                <span class="file-name" id="file-name">No file chosen</span>
-            </div>
-            <br>
-            <button class="upload-button" type="submit">Upload and Process</button>
-        </form>
-    </div>
-
-    <!-- Loading Page (Hidden initially) -->
-    <div class="loading-page" id="loadingPage" style="display: none;">
-        <div class="loading-bar">
-            <div class="loading-bar-inner"></div>
-        </div>
-    </div>
-
-    <script>
-        // Display the chosen file name and hide the "Choose File" button after file selection
-        const fileUpload = document.getElementById('file-upload');
-        const fileNameDisplay = document.getElementById('file-name');
-        const customFileUpload = document.getElementById('customFileUpload');
-
-        fileUpload.addEventListener('change', function() {
-            if (fileUpload.files.length > 0) {
-                fileNameDisplay.textContent = fileUpload.files[0].name;
-                customFileUpload.style.display = 'none';  // Hide the "Choose File" button
-            } else {
-                fileNameDisplay.textContent = 'No file chosen';
-            }
-        });
-
-        // Handle form submission
-        const uploadForm = document.getElementById('uploadForm');
-        const loadingPage = document.getElementById('loadingPage');
-
-        uploadForm.addEventListener('submit', function(event) {
-            // Show the loading page after submission
-            loadingPage.style.display = 'flex';  // Show loading page
-
-            // Optionally add a delay for better UX before form submission
-            setTimeout(function() {
-                uploadForm.submit();  // Continue submitting the form
-            }, 1000);  // Adjust the delay time as needed
-        });
-    </script>
-</section>
-    
 </body>
 </html>
