@@ -111,6 +111,7 @@ main {
     display: inline-block;
     font: inherit;
     width: 200px;
+    margin-top: 15px;
 }
 
 .custom-file-upload:hover {
