@@ -4,9 +4,9 @@ Created on Sun Aug 25 10:07:16 2024
 @author: xanderbroeckx
 """
 #%%
-#pip install tabula flask PyPDF2 pandas numpy
+#pip install tabula-py flask PyPDF2 pandas numpy
 
-import tabula;
+import tabula
 import numpy as np;
 import pandas as pd;
 from flask import Flask, session, redirect, url_for, request, render_template;
